@@ -16,10 +16,11 @@ parser = argparse.ArgumentParser(description='Read sensor data and send to API')
 parser.add_argument('--dry-run', action='store_true', help='Do not send data to API')
 args = parser.parse_args()
 
-def perform_api_request():
-    r = requests.post(f"https://{API_TOKEN}/api/sensors", timeout=API_TIMEOUT, json={
-        "temperature": read_temp(),
-        "ph": read_ph()
+def perform_api_request(sensor, value):
+    requests.post(f"https://{API_HOST}/api/entries/push", timeout=API_TIMEOUT, json={
+        "token": API_TOKEN,
+        "sensor": sensor,
+        "value": value
     })
 
 def perform_dry_run():
@@ -29,10 +30,12 @@ def perform_dry_run():
     print("--------------------------")
 
 
-while True:
-    if args.dry_run:
-        perform_dry_run()
-    else:
-        perform_api_request()
+if __name__ == "__main__":
+    while True:
+        if args.dry_run:
+            perform_dry_run()
+        else:
+            perform_api_request("Temperature", read_temp())
+            perform_api_request("pH", read_ph())
 
-    time.sleep(POLL_DELAY)
+        time.sleep(POLL_DELAY)

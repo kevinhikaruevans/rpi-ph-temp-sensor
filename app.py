@@ -17,7 +17,7 @@ parser.add_argument('--dry-run', action='store_true', help='Do not send data to 
 args = parser.parse_args()
 
 def perform_api_request(sensor, value, timestamp=None):
-    requests.post(f"https://{API_HOST}/api/entries/push", timeout=API_TIMEOUT, json={
+    requests.post(f"{API_HOST}/api/entries/push", timeout=API_TIMEOUT, json={
         "token": API_TOKEN,
         "sensor": sensor,
         "value": value

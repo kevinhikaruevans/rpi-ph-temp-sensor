@@ -33,7 +33,7 @@ def read_temp():
 def read_ph():
     # https://files.atlas-scientific.com/Gravity-pH-datasheet.pdf
     value = adc.read_adc(0, gain=GAIN)
-    voltage = value * (3.3 / 65536)
+    voltage = value * (3.3 / 32767) + 0.33
     ph = (-5.6548 * voltage) + 15.509
 
     return ph
